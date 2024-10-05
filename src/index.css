@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&display=swap";
+
+
+
+
+
+:root {
+  --youtube-bg: #0F0F0F;
+}
+
+hr {
+  border-color: #333;
+}
+
+input {
+  min-width: 0 !important;
+}
+
+.nice-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.nice-scrollbar::-webkit-scrollbar-track {
+  background: #333;
+}
+
+.nice-scrollbar::-webkit-scrollbar-thumb {
+  background: #555;
+}
