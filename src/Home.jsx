@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Video } from "./components/video";
 import { Shell } from "./components/shell";
 import { YOUTUBE_API_KEY } from "./constants";
+import { useLoggedIn } from "./stores/logged-in";
+import { useNavigate } from "react-router-dom";
 
 const CACHE_KEY = "youtubeTrendingCache";
 const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
@@ -46,21 +48,28 @@ export default function Home() {
             setVideos(trendingVideos);
         })();
     }, []);
+    const user = useLoggedIn(state => state.user);
+    const navigate = useNavigate();
+
+    if (!user) {
+        navigate("/login")
+        return null;
+    }
 
     return (
         <Shell>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4"> {videos.map((video) => (
-                    <Video
-                        key={video.id}
-                        id={video.id}
-                        title={video.snippet.title}
-                        authorName={video.snippet.channelTitle}
-                        channelId={video.snippet.channelId}
-                        views={parseInt(video.statistics.viewCount)}
-                        uploadedAt={new Date(video.snippet.publishedAt)}
-                        thumbnail={video.snippet.thumbnails.high.url}
-                    />
-                ))}
+                <Video
+                    key={video.id}
+                    id={video.id}
+                    title={video.snippet.title}
+                    authorName={video.snippet.channelTitle}
+                    channelId={video.snippet.channelId}
+                    views={parseInt(video.statistics.viewCount)}
+                    uploadedAt={new Date(video.snippet.publishedAt)}
+                    thumbnail={video.snippet.thumbnails.high.url}
+                />
+            ))}
             </div>
         </Shell>
     );
